@@ -5,9 +5,66 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Slot Machine!</title>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<!-- Add jQuery script, if necessary -->
 	<script defer src="js/main.js"></script>
 </head>
 <body>
+	<header>
+		<h1>SLOT MACHINE!</h1><!-- Disappearing h1 -->
+	</header>
+	<main>
+		<section class="pay-table">
+			<h2>Pay Table:</h2>
+			<ul>
+				<li class="pay-item"><!-- Make this a flex row -->
+					<div class="combo">7 + 7 + 7:</div>
+					<div class="pri-payout">x20 [Main Line]</div>
+					<div class="sec-payout">x10 [Seconday Lines]</div>
+				</li>
+				<li class="pay-item">
+					<div class="combo">BAR + BAR + BAR:</div>
+					<div class="pri-payout">x10 [Main Line]</div>
+					<div class="sec-payout">x5 [Secondary Lines]</div>
+				</li>
+				<li class="pay-item">
+					<div class="combo">Cherry + Cherry + Cherry:</div>
+					<div class="pri-payout">x5 [Main Line]</div>
+					<div class="sec-payout">x2 [Secondary Lines]</div>
+				</li>
+				<li class="pay-item">
+					<div class="combo">All Other Combinations:</div>
+					<div class="pri-payout">x0 [Main Line]</div>
+					<div class="sec-payout">x0 [Secondary Line]</div>
+				</li>
+			</ul>
+		</section>
+		<!-- Add left hand side markers -->
+		<section class="slot-machine">
+			<div id="one0"></div>
+			<div id="two0"></div>
+			<div id="three0"></div>
 
+			<div id="one1"></div>
+			<div id="two1"></div>
+			<div id="three1"></div>
+
+			<div id="one2"></div>
+			<div id="two2"></div>
+			<div id="three2"></div>
+		</section>
+		<section class="io">
+			<button>1 Line</button>
+			<button>3 Lines</button>
+			<button>1 CR<br />per Line</button>
+			<button>5 CR<br />per Line</button>
+			<button>GAMBLE!</button>
+			<button>RESET</button>
+			<div id="credits"></div>
+			<div id="message"></div>
+		</section>
+	</main>
+	<footer>
+		<p>By A. Neti, 2019</p>
+	</footer>
 </body>
 </html>
