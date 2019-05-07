@@ -1,8 +1,9 @@
 /*----- constants -----*/
-// Icebox: add sound, add animation
-// add comments?
-// change this array to duplicate some elements
-// get images for each of the symbols or use emoji? + Update HTML
+// Icebox: add sound, add animation & timeout, add net value indicator & fade, win confetti
+// Icebox: add button disable logic based on credits remaining[x], disable GAMBLE button[x], fix styling
+// add code comments?
+// add more to array? BAR symbol?
+// Update HTML to reflect symbols[x]
 const SYMBOLS = [
 	{
 		val: '🌟🌟',
@@ -23,16 +24,16 @@ const SYMBOLS = [
 		scalarS: 5,
 	},
 	{
+		val: '🍒🍒',
+		src: '',
+		scalarP: 10,
+		scalarS: 5,
+	},
+	{
 		val: '🍒',
 		src: '',
 		scalarP: 5,
 		scalarS: 2,
-	},
-	{
-		val: '🍎',
-		src: '',
-		scalarP: 0,
-		scalarS: 0,
 	},
 	{
 		val: '🍇',
@@ -47,16 +48,16 @@ const SYMBOLS = [
 		scalarS: 0,
 	},
 	{
-		val: '🌟',
+		val: '🍎',
 		src: '',
-		scalarP: 15,
-		scalarS: 10,
+		scalarP: 0,
+		scalarS: 0,
 	},
 	{
-		val: '🌟',
+		val: '💩',
 		src: '',
-		scalarP: 15,
-		scalarS: 10,
+		scalarP: 0,
+		scalarS: 0,
 	}
 	];
 
@@ -73,43 +74,52 @@ var fiveCR;
 
 
 /*----- cached element references -----*/
-const userMsg = document.getElementById('message');
 const creditAmt = document.getElementById('credits');
+const userMsg = document.getElementById('message');
 
 const oneLineBtn = document.getElementsByTagName('button')[0];
 const threeLineBtn = document.getElementsByTagName('button')[1];
-const oneCRBtn = document.getElementsByTagName('button')[2];
-const fiveCRBtn = document.getElementsByTagName('button')[3];
-const gambleBtn = document.getElementsByTagName('button')[4];
+const gambleBtn = document.getElementsByTagName('button')[2];
+const oneCRBtn = document.getElementsByTagName('button')[3];
+const fiveCRBtn = document.getElementsByTagName('button')[4];
 const resetBtn = document.getElementsByTagName('button')[5];
 
 
 /*----- event listeners -----*/
-// Set the true and false status in each (exclusively click on one or the other).
 // Blue italics refers to global var?
+// add mouseover event listeners to fix the hover characteristic specificity or use ClassList [x]
+// strong tags specificity?
 oneLineBtn.addEventListener('click', function() {
 	oneLine = true;
 	threeLine = false;
-	// this.style.backgroundColor = 'black';
-	// this.style.color = 'white';
-	// threeLineBtn.style.backgroundColor = 'white';
-	// threeLineBtn.style.color = 'black';
+	this.style.backgroundColor = 'black';
+	this.style.color = 'white';
+	threeLineBtn.style.backgroundColor = 'white';
+	threeLineBtn.style.color = 'black';
 });
 threeLineBtn.addEventListener('click', function() {
 	oneLine = false;
 	threeLine = true;
-	// this.style.backgroundColor = 'black';
-	// this.style.color = 'white';
-	// oneLineBtn.style.backgroundColor = 'white';
-	// oneLineBtn.style.color = 'black';
+	this.style.backgroundColor = 'black';
+	this.style.color = 'white';
+	oneLineBtn.style.backgroundColor = 'white';
+	oneLineBtn.style.color = 'black';
 });
 oneCRBtn.addEventListener('click', function() {
 	oneCR = true;
 	fiveCR = false;
+	this.style.backgroundColor = 'black';
+	this.style.color = 'white';
+	fiveCRBtn.style.backgroundColor = 'white';
+	fiveCRBtn.style.color = 'black';
 });
 fiveCRBtn.addEventListener('click', function() {
 	oneCR = false;
 	fiveCR = true;
+	this.style.backgroundColor = 'black';
+	this.style.color = 'white';
+	oneCRBtn.style.backgroundColor = 'white';
+	oneCRBtn.style.color = 'black';
 });
 gambleBtn.addEventListener('click', play);
 resetBtn.addEventListener('click', init);
@@ -117,7 +127,6 @@ resetBtn.addEventListener('click', init);
 
 /*----- functions -----*/
 // check function order
-
 init();
 
 function init() { 
@@ -135,6 +144,7 @@ function init() {
 function render() {
 	// why does const work here?
 	// inefficient to store objects? [x]
+	// added setTimeout() - does not work
 	showReel1.forEach( function(ele, idx) {
 		const div1 = document.getElementById(`one${idx}`);
 		div1.textContent = ele.val;
@@ -150,17 +160,44 @@ function render() {
 		div3.textContent = ele.val;
 	} );
 
+
 	creditAmt.textContent = `CREDITS REMAINING: ${totalCredits}`;
 
+
+	// this runs only after init() or play()
 	if (totalCredits <= 0) {
 		userMsg.textContent = `YOU HAVE NO MONEY LEFT!`;
+		userMsg.style.border = `2px solid red`;
+		userMsg.style.color = `red`;
+	} else if ((!oneLine && !threeLine) || (!oneCR && !fiveCR)) {
+		userMsg.textContent = `PLEASE MAKE A SELECTION`;
+		userMsg.style.border = '2px solid orange';
+		userMsg.style.color = `orange`;
 	} else {
 		userMsg.textContent = '';
+		userMsg.style.border = `2px solid white`;
 	}
-	// button active criteria
-	// disable any buttons based on totalCredits status
-	// disable GAMBLE till all buttons are clicked!
-	// add fade in for net amount gained or loss?
+
+	// removed code
+
+
+	// hover stops working [x] - make this a separate function
+	if (!oneLine) {
+		oneLineBtn.style.backgroundColor = 'white';
+		oneLineBtn.style.color = 'black';
+	}
+	if (!threeLine) {
+		threeLineBtn.style.backgroundColor = 'white';
+		threeLineBtn.style.color = 'black';
+	}
+	if (!oneCR) {
+		oneCRBtn.style.backgroundColor = 'white';
+		oneCRBtn.style.color = 'black';
+	}
+	if (!fiveCR) {
+		fiveCRBtn.style.backgroundColor = 'white';
+		fiveCRBtn.style.color = 'black';
+	}
 }
 
 function randReel() {
@@ -186,20 +223,30 @@ function randReel() {
 }
 
 function play() {
+	// modify less than 0?
 	if (totalCredits <= 0) return;
 	if ((!oneLine && !threeLine) || (!oneCR && !fiveCR)) return;
 
 	let betAmount = calcBet();
+
+	// cannot outsource this function
+	if (oneLine) {
+		if (betAmount > totalCredits) return;
+	} else if (threeLine) {
+		if (betAmount * 3 > totalCredits) return;
+	}
+	
+	// set timeout on below?
 	showReel1 = randReel();
 	showReel2 = randReel();
 	showReel3 = randReel();
 	updateCredits(betAmount);
 
-	// remove this block if user selection history is desired
-	oneLine = false;
-	threeLine = false;
-	oneCR = false;
-	fiveCR = false;
+	// use this block if user selection is to be reset after each gamble
+	// oneLine = false;
+	// threeLine = false;
+	// oneCR = false;
+	// fiveCR = false;
 
 	render();
 }
@@ -239,8 +286,6 @@ function updateCredits(amount) {
 	} else if (threeLine) {
 		totalCredits -= amount;
 	}
-
-	// floor totalCredits to 0?
 
 	return totalCredits; // return is necessary?
 }

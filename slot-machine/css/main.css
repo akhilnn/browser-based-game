@@ -12,11 +12,16 @@ body {
 }
 
 /* TO DO:
-Resizing window causes centering errors
-Overwrote click feedback action changing color
-Make Buttons with shadow, add button click logic
-Button vertical height needs to be fixed
-Div background color */
+Overwrote click feedback action changing color[x]
+Display flex on list items removes bullets[x]
+Button vertical height needs to be fixed => fixed with grid [x]
+Resizing window causes centering errors - vmin
+add button click logic - hover not working - removed [x]
+Make it to look more like slot machine (color scheme)
+Fix pay table / Fix message orientation
+Build the bet line indicators
+Add font styling
+Fix centering of text */
 
 main {
 	display: grid;
@@ -29,6 +34,16 @@ main {
 
 section.pay-table {
 	grid-area: tbl;
+	border: 2px solid black;
+}
+
+ul {
+	padding-left: 6px;
+}
+
+li {
+	list-style: none;
+	margin-top: 15px;
 }
 
 section.slot-machine {
@@ -38,7 +53,7 @@ section.slot-machine {
 	grid-template-rows: 15vmin 15vmin 15vmin;
 	grid-gap: 1vmin;
 	background-color: blanchedalmond;
-	border: 1px solid black;
+	border: 3px solid black;
 	padding: 20px;
 	margin: 20px;
 }
@@ -47,24 +62,39 @@ section.slot-machine > div {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 2px solid black;
-	border-radius: 30%;
+	border: 2px dotted grey;
 	font-size: 30px;
 }
 
 section.io {
 	grid-area: btns;
+	display: grid;
+	grid-template-columns: 15% 15% 15% 40%;
+	grid-template-rows: 50% 50%;
 }
 
 button {
 	border: 3px solid black;
 	background-color: white;
+	box-shadow: 5px 5px 5px grey;
 	width: 65px;
 	height: 40px;
 	margin: 5px;
 }
 
-button:hover {
-	background-color: black;
-	color: white;
+#go:hover {
+	background-color: lime;
+}
+
+#reset:hover {
+	background-color: orangered;
+}
+
+/* Fix centering of text box and font style */
+#credits {
+	text-align: center;
+}
+
+#message {
+	text-align: center;
 }

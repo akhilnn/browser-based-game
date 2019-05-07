@@ -14,27 +14,22 @@
 	</header>
 	<main>
 		<section class="pay-table">
-			<h2>Pay Table:</h2>
+			<h3>Pay Table:</h3>
 			<ul>
-				<li class="pay-item"><!-- Make this a flex row -->
-					<div class="combo">7 + 7 + 7:</div>
-					<div class="pri-payout">x20 [Main Line]</div>
-					<div class="sec-payout">x10 [Seconday Lines]</div>
+				<li class="pay-item">
+					<div class="combo">🌟🌟 + 🌟🌟 + 🌟🌟: x20 || x10</div>
 				</li>
 				<li class="pay-item">
-					<div class="combo">BAR + BAR + BAR:</div>
-					<div class="pri-payout">x10 [Main Line]</div>
-					<div class="sec-payout">x5 [Secondary Lines]</div>
+					<div class="combo">🌟 + 🌟 + 🌟: x15 || x10</div>
 				</li>
 				<li class="pay-item">
-					<div class="combo">Cherry + Cherry + Cherry:</div>
-					<div class="pri-payout">x5 [Main Line]</div>
-					<div class="sec-payout">x2 [Secondary Lines]</div>
+					<div class="combo">🍒🍒 + 🍒🍒 + 🍒🍒: x10 || x5</div>
 				</li>
 				<li class="pay-item">
-					<div class="combo">All Other Combinations:</div>
-					<div class="pri-payout">x0 [Main Line]</div>
-					<div class="sec-payout">x0 [Secondary Line]</div>
+					<div class="combo">🍒 + 🍒 + 🍒: x5 || x2</div>
+				</li>
+				<li class="pay-item">
+					<div class="combo">All Other Combinations: x0 || x0</div>
 				</li>
 			</ul>
 		</section>
@@ -53,13 +48,13 @@
 			<div id="three2"></div>
 		</section>
 		<section class="io">
-			<button>1 Line</button>
-			<button>3 Lines</button>
-			<button>1 CR<br />per Line</button>
-			<button>5 CR<br />per Line</button>
-			<button>GAMBLE!</button>
-			<button>RESET</button>
+			<button class="opt">1 Line</button>
+			<button class="opt">3 Lines</button>
+			<button id="go">GAMBLE!</button>
 			<div id="credits"></div>
+			<button class="opt">1 CR<br />per Line</button>
+			<button class="opt">5 CR<br />per Line</button>
+			<button id="reset">RESET</button>
 			<div id="message"></div>
 		</section>
 	</main>
