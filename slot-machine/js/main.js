@@ -1,9 +1,9 @@
 /*----- constants -----*/
-// Icebox: add sound, add animation & timeout, add net value indicator & fade, win confetti
-// Icebox: add button disable logic based on credits remaining[x], disable GAMBLE button[x], fix styling
-// add code comments?
-// add more to array? BAR symbol?
+// Icebox: add animation & timeout, add fade, win confetti, fix styling**, update README, update div background, 2 in a row
+// add code comments?, peer review checklist
+// add more to array? BAR symbol? Reorder Array
 // Update HTML to reflect symbols[x]
+// cache DOM elements, refactor into separate function, show page source, paste from history
 const SYMBOLS = [
 	{
 		val: '🌟🌟',
@@ -61,11 +61,16 @@ const SYMBOLS = [
 	}
 	];
 
+// download?[x], creates multiple resource references on site[x]
+const soundURL = ['https://www.shockwave-sound.com/sound-effects/slot-machine-sounds/slot_machine_beep_buzz.wav',
+'https://www.shockwave-sound.com/sound-effects/slot-machine-sounds/slot_machine_insert_3_coins_and_spin.wav'];
+
 /*----- app's state (variables) -----*/
 var showReel1;
 var showReel2;
 var showReel3;
 var totalCredits;
+var netValue;
 
 var oneLine;
 var threeLine;
@@ -83,6 +88,8 @@ const gambleBtn = document.getElementsByTagName('button')[2];
 const oneCRBtn = document.getElementsByTagName('button')[3];
 const fiveCRBtn = document.getElementsByTagName('button')[4];
 const resetBtn = document.getElementsByTagName('button')[5];
+
+const player = new Audio();
 
 
 /*----- event listeners -----*/
@@ -126,25 +133,28 @@ resetBtn.addEventListener('click', init);
 
 
 /*----- functions -----*/
-// check function order
+// check function order [x]
 init();
 
 function init() { 
 	showReel1 = [SYMBOLS[0], SYMBOLS[1], SYMBOLS[2]];
 	showReel2 = [SYMBOLS[0], SYMBOLS[1], SYMBOLS[2]];
 	showReel3 = [SYMBOLS[0], SYMBOLS[1], SYMBOLS[2]];
-	totalCredits = 100;
+	totalCredits = 100; // put this back
+	netValue = 0; // check if this is needed
 	oneLine = false;
 	threeLine = false;
 	oneCR = false;
 	fiveCR = false;
+	player.src = soundURL[0];
+	player.play();
 	render();
 }
 
 function render() {
 	// why does const work here?
 	// inefficient to store objects? [x]
-	// added setTimeout() - does not work
+	// added setTimeout() - does not work!!
 	showReel1.forEach( function(ele, idx) {
 		const div1 = document.getElementById(`one${idx}`);
 		div1.textContent = ele.val;
@@ -166,16 +176,20 @@ function render() {
 
 	// this runs only after init() or play()
 	if (totalCredits <= 0) {
-		userMsg.textContent = `YOU HAVE NO MONEY LEFT!`;
-		userMsg.style.border = `2px solid red`;
-		userMsg.style.color = `red`;
+		userMsg.textContent = 'YOU HAVE NO CREDITS LEFT! 🤑';
+		userMsg.style.border = '2px solid red';
+		userMsg.style.color = 'red';
 	} else if ((!oneLine && !threeLine) || (!oneCR && !fiveCR)) {
-		userMsg.textContent = `PLEASE MAKE A SELECTION`;
+		userMsg.textContent = 'PLEASE MAKE A SELECTION';
 		userMsg.style.border = '2px solid orange';
-		userMsg.style.color = `orange`;
+		userMsg.style.color = 'orange';
+	} else if (netValue > 0) {
+		userMsg.textContent = `NET INCREASE OF ${netValue} CREDITS`;
+		userMsg.style.border = '2px solid lime';
+		userMsg.style.color = 'lime';
 	} else {
 		userMsg.textContent = '';
-		userMsg.style.border = `2px solid white`;
+		userMsg.style.border = '2px solid white';
 	}
 
 	// removed code
@@ -198,6 +212,8 @@ function render() {
 		fiveCRBtn.style.backgroundColor = 'white';
 		fiveCRBtn.style.color = 'black';
 	}
+
+	renderLineEq();
 }
 
 function randReel() {
@@ -235,6 +251,9 @@ function play() {
 	} else if (threeLine) {
 		if (betAmount * 3 > totalCredits) return;
 	}
+
+	player.src = soundURL[1];
+	player.play();
 	
 	// set timeout on below?
 	showReel1 = randReel();
@@ -263,28 +282,31 @@ function calcBet() {
 }
 
 function updateCredits(amount) {
-	if (oneLine && isEq(1)) {
-		totalCredits = totalCredits - amount + (amount * showReel1[1].scalarP);
-	} else if (oneLine) {
-		totalCredits -= amount;
-	}
+	netValue = 0;
 
 	if (threeLine && isEq(0)) {
 		totalCredits = totalCredits - amount + (amount * showReel1[0].scalarS);
+		netValue = netValue - amount + (amount * showReel1[0].scalarS);
 	} else if (threeLine) {
 		totalCredits -= amount;
+		netValue -= amount;
 	}
 
-	if (threeLine && isEq(1)) {
+	// confirm that this works
+	if ((oneLine || threeLine) && isEq(1)) {
 		totalCredits = totalCredits - amount + (amount * showReel1[1].scalarP);
-	} else if (threeLine) {
+		netValue = netValue - amount + (amount * showReel1[1].scalarP);
+	} else if (oneLine || threeLine) {
 		totalCredits -= amount;
+		netValue -= amount;
 	}
 
 	if (threeLine && isEq(2)) {
 		totalCredits = totalCredits - amount + (amount * showReel1[2].scalarS);
+		netValue = netValue - amount + (amount * showReel1[2].scalarS);
 	} else if (threeLine) {
 		totalCredits -= amount;
+		netValue -= amount;
 	}
 
 	return totalCredits; // return is necessary?
@@ -295,6 +317,40 @@ function isEq(idx) {
 		return true;
 	} else {
 		return false;
+	}
+}
+
+function renderLineEq() {
+	// cache the DOM elements
+	// make background color change instead?
+	if (threeLine && isEq(0) && (showReel1[0].val === '🌟🌟' || showReel1[0].val === '🌟' || showReel1[0].val === '🍒🍒' || showReel1[0].val === '🍒')) {
+		document.getElementById('one0').style.border = '4px solid red';
+		document.getElementById('two0').style.border = '4px solid red';
+		document.getElementById('three0').style.border = '4px solid red';
+	} else {
+		document.getElementById('one0').style.border = '2px dotted grey';
+		document.getElementById('two0').style.border = '2px dotted grey';
+		document.getElementById('three0').style.border = '2px dotted grey';
+	}
+
+	if ((oneLine || threeLine) && isEq(1) && (showReel1[1].val === '🌟🌟' || showReel1[1].val === '🌟' || showReel1[1].val === '🍒🍒' || showReel1[1].val === '🍒')) {
+		document.getElementById('one1').style.border = '4px solid red';
+		document.getElementById('two1').style.border = '4px solid red';
+		document.getElementById('three1').style.border = '4px solid red';
+	} else {
+		document.getElementById('one1').style.border = '2px dotted grey';
+		document.getElementById('two1').style.border = '2px dotted grey';
+		document.getElementById('three1').style.border = '2px dotted grey';
+	}
+
+	if (threeLine && isEq(2) && (showReel1[2].val === '🌟🌟' || showReel1[2].val === '🌟' || showReel1[2].val === '🍒🍒' || showReel1[2].val === '🍒')) {
+		document.getElementById('one2').style.border = '4px solid red';
+		document.getElementById('two2').style.border = '4px solid red';
+		document.getElementById('three2').style.border = '4px solid red';
+	} else {
+		document.getElementById('one2').style.border = '2px dotted grey';
+		document.getElementById('two2').style.border = '2px dotted grey';
+		document.getElementById('three2').style.border = '2px dotted grey';
 	}
 }
 

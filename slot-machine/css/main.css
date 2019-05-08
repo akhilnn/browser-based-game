@@ -15,13 +15,15 @@ body {
 Overwrote click feedback action changing color[x]
 Display flex on list items removes bullets[x]
 Button vertical height needs to be fixed => fixed with grid [x]
-Resizing window causes centering errors - vmin
+Resizing window causes centering errors - vmin [x]
 add button click logic - hover not working - removed [x]
-Make it to look more like slot machine (color scheme)
-Fix pay table / Fix message orientation
-Build the bet line indicators
-Add font styling
-Fix centering of text */
+
+Make it to look more like slot machine (color scheme) / Fix pay table / Fix message orientation
+Add font family to all text
+Make the whole thing a grid
+Lower dotted grid size?
+move button array
+CSS Reset, Responsive */
 
 main {
 	display: grid;
@@ -49,20 +51,21 @@ li {
 section.slot-machine {
 	grid-area: mach;
 	display: grid;
-	grid-template-columns: 15vmin 15vmin 15vmin;
-	grid-template-rows: 15vmin 15vmin 15vmin;
-	grid-gap: 1vmin;
-	background-color: blanchedalmond;
+	grid-template-columns: 90px 90px 90px;
+	grid-template-rows: 90px 90px 90px;
+	grid-column-gap: 3vmin;
+	background-color: purple;
 	border: 3px solid black;
-	padding: 20px;
+	padding: 20px 70px 20px 70px;
 	margin: 20px;
 }
 
 section.slot-machine > div {
+	background-color: white;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 2px dotted grey;
+	border: 2px dotted grey; /* Keep this as a backup */
 	font-size: 30px;
 }
 
