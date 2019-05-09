@@ -1,9 +1,4 @@
 /*----- constants -----*/
-// Icebox: add animation & timeout, add fade, win confetti, fix styling**, update README, update div background, 2 in a row
-// add code comments?, peer review checklist
-// add more to array? BAR symbol? Reorder Array
-// Update HTML to reflect symbols[x]
-// cache DOM elements, refactor into separate function, show page source, paste from history
 const SYMBOLS = [
 	{
 		val: '🌟🌟',
@@ -32,8 +27,8 @@ const SYMBOLS = [
 	{
 		val: '🍒',
 		src: '',
-		scalarP: 5,
-		scalarS: 2,
+		scalarP: 8,
+		scalarS: 4,
 	},
 	{
 		val: '🍇',
@@ -61,9 +56,9 @@ const SYMBOLS = [
 	}
 	];
 
-// download?[x], creates multiple resource references on site[x]
 const soundURL = ['https://www.shockwave-sound.com/sound-effects/slot-machine-sounds/slot_machine_beep_buzz.wav',
 'https://www.shockwave-sound.com/sound-effects/slot-machine-sounds/slot_machine_insert_3_coins_and_spin.wav'];
+
 
 /*----- app's state (variables) -----*/
 var showReel1;
@@ -93,9 +88,6 @@ const player = new Audio();
 
 
 /*----- event listeners -----*/
-// Blue italics refers to global var?
-// add mouseover event listeners to fix the hover characteristic specificity or use ClassList [x]
-// strong tags specificity?
 oneLineBtn.addEventListener('click', function() {
 	oneLine = true;
 	threeLine = false;
@@ -133,15 +125,14 @@ resetBtn.addEventListener('click', init);
 
 
 /*----- functions -----*/
-// check function order [x]
 init();
 
 function init() { 
 	showReel1 = [SYMBOLS[0], SYMBOLS[1], SYMBOLS[2]];
 	showReel2 = [SYMBOLS[0], SYMBOLS[1], SYMBOLS[2]];
 	showReel3 = [SYMBOLS[0], SYMBOLS[1], SYMBOLS[2]];
-	totalCredits = 100; // put this back
-	netValue = 0; // check if this is needed
+	totalCredits = 500;
+	netValue = 0;
 	oneLine = false;
 	threeLine = false;
 	oneCR = false;
@@ -152,9 +143,6 @@ function init() {
 }
 
 function render() {
-	// why does const work here?
-	// inefficient to store objects? [x]
-	// added setTimeout() - does not work!!
 	showReel1.forEach( function(ele, idx) {
 		const div1 = document.getElementById(`one${idx}`);
 		div1.textContent = ele.val;
@@ -176,7 +164,7 @@ function render() {
 
 	// this runs only after init() or play()
 	if (totalCredits <= 0) {
-		userMsg.textContent = 'YOU HAVE NO CREDITS LEFT! 🤑';
+		userMsg.textContent = 'YOU HAVE NO CREDITS LEFT! 😵';
 		userMsg.style.border = '2px solid red';
 		userMsg.style.color = 'red';
 	} else if ((!oneLine && !threeLine) || (!oneCR && !fiveCR)) {
@@ -189,30 +177,12 @@ function render() {
 		userMsg.style.color = 'lime';
 	} else {
 		userMsg.textContent = '';
-		userMsg.style.border = '2px solid white';
+		userMsg.style.border = '2px solid purple';
+		userMsg.style.color = 'purple';
 	}
 
-	// removed code
-
-
-	// hover stops working [x] - make this a separate function
-	if (!oneLine) {
-		oneLineBtn.style.backgroundColor = 'white';
-		oneLineBtn.style.color = 'black';
-	}
-	if (!threeLine) {
-		threeLineBtn.style.backgroundColor = 'white';
-		threeLineBtn.style.color = 'black';
-	}
-	if (!oneCR) {
-		oneCRBtn.style.backgroundColor = 'white';
-		oneCRBtn.style.color = 'black';
-	}
-	if (!fiveCR) {
-		fiveCRBtn.style.backgroundColor = 'white';
-		fiveCRBtn.style.color = 'black';
-	}
-
+	
+	renderBtnReset();
 	renderLineEq();
 }
 
@@ -239,13 +209,11 @@ function randReel() {
 }
 
 function play() {
-	// modify less than 0?
 	if (totalCredits <= 0) return;
 	if ((!oneLine && !threeLine) || (!oneCR && !fiveCR)) return;
 
 	let betAmount = calcBet();
 
-	// cannot outsource this function
 	if (oneLine) {
 		if (betAmount > totalCredits) return;
 	} else if (threeLine) {
@@ -255,7 +223,6 @@ function play() {
 	player.src = soundURL[1];
 	player.play();
 	
-	// set timeout on below?
 	showReel1 = randReel();
 	showReel2 = randReel();
 	showReel3 = randReel();
@@ -282,34 +249,29 @@ function calcBet() {
 }
 
 function updateCredits(amount) {
-	netValue = 0;
+	netValue = totalCredits;
 
 	if (threeLine && isEq(0)) {
 		totalCredits = totalCredits - amount + (amount * showReel1[0].scalarS);
-		netValue = netValue - amount + (amount * showReel1[0].scalarS);
 	} else if (threeLine) {
 		totalCredits -= amount;
-		netValue -= amount;
 	}
 
-	// confirm that this works
 	if ((oneLine || threeLine) && isEq(1)) {
 		totalCredits = totalCredits - amount + (amount * showReel1[1].scalarP);
-		netValue = netValue - amount + (amount * showReel1[1].scalarP);
 	} else if (oneLine || threeLine) {
 		totalCredits -= amount;
-		netValue -= amount;
 	}
 
 	if (threeLine && isEq(2)) {
 		totalCredits = totalCredits - amount + (amount * showReel1[2].scalarS);
-		netValue = netValue - amount + (amount * showReel1[2].scalarS);
 	} else if (threeLine) {
 		totalCredits -= amount;
-		netValue -= amount;
 	}
 
-	return totalCredits; // return is necessary?
+	netValue = totalCredits - netValue;
+
+	return totalCredits;
 }
 
 function isEq(idx) {
@@ -320,9 +282,28 @@ function isEq(idx) {
 	}
 }
 
+function renderBtnReset() {
+	if (!oneLine) {
+		oneLineBtn.style.backgroundColor = 'white';
+		oneLineBtn.style.color = 'black';
+	}
+	if (!threeLine) {
+		threeLineBtn.style.backgroundColor = 'white';
+		threeLineBtn.style.color = 'black';
+	}
+	if (!oneCR) {
+		oneCRBtn.style.backgroundColor = 'white';
+		oneCRBtn.style.color = 'black';
+	}
+	if (!fiveCR) {
+		fiveCRBtn.style.backgroundColor = 'white';
+		fiveCRBtn.style.color = 'black';
+	}
+}
+
 function renderLineEq() {
 	// cache the DOM elements
-	// make background color change instead?
+	// make background color change instead? or change to gold or orange?
 	if (threeLine && isEq(0) && (showReel1[0].val === '🌟🌟' || showReel1[0].val === '🌟' || showReel1[0].val === '🍒🍒' || showReel1[0].val === '🍒')) {
 		document.getElementById('one0').style.border = '4px solid red';
 		document.getElementById('two0').style.border = '4px solid red';
