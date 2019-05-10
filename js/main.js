@@ -168,11 +168,11 @@ function render() {
 		userMsg.style.border = '2px solid red';
 		userMsg.style.color = 'red';
 	} else if ((!oneLine && !threeLine) || (!oneCR && !fiveCR)) {
-		userMsg.textContent = 'PLEASE MAKE A SELECTION';
+		userMsg.textContent = 'PLEASE MAKE A SELECTION 🤔';
 		userMsg.style.border = '2px solid orange';
 		userMsg.style.color = 'orange';
 	} else if (netValue > 0) {
-		userMsg.textContent = `NET INCREASE OF ${netValue} CREDITS`;
+		userMsg.textContent = `YOU WON ${netValue} CREDITS! 🤑`;
 		userMsg.style.border = '2px solid lime';
 		userMsg.style.color = 'lime';
 	} else {
@@ -302,36 +302,34 @@ function renderBtnReset() {
 }
 
 function renderLineEq() {
-	// cache the DOM elements
-	// make background color change instead? or change to gold or orange?
 	if (threeLine && isEq(0) && (showReel1[0].val === '🌟🌟' || showReel1[0].val === '🌟' || showReel1[0].val === '🍒🍒' || showReel1[0].val === '🍒')) {
-		document.getElementById('one0').style.border = '4px solid red';
-		document.getElementById('two0').style.border = '4px solid red';
-		document.getElementById('three0').style.border = '4px solid red';
+		document.getElementById('one0').style.backgroundColor = 'gold';
+		document.getElementById('two0').style.backgroundColor = 'gold';
+		document.getElementById('three0').style.backgroundColor = 'gold';
 	} else {
-		document.getElementById('one0').style.border = '2px dotted grey';
-		document.getElementById('two0').style.border = '2px dotted grey';
-		document.getElementById('three0').style.border = '2px dotted grey';
+		document.getElementById('one0').style.backgroundColor = 'white';
+		document.getElementById('two0').style.backgroundColor = 'white';
+		document.getElementById('three0').style.backgroundColor = 'white';
 	}
 
 	if ((oneLine || threeLine) && isEq(1) && (showReel1[1].val === '🌟🌟' || showReel1[1].val === '🌟' || showReel1[1].val === '🍒🍒' || showReel1[1].val === '🍒')) {
-		document.getElementById('one1').style.border = '4px solid red';
-		document.getElementById('two1').style.border = '4px solid red';
-		document.getElementById('three1').style.border = '4px solid red';
+		document.getElementById('one1').style.backgroundColor = 'gold';
+		document.getElementById('two1').style.backgroundColor = 'gold';
+		document.getElementById('three1').style.backgroundColor = 'gold';
 	} else {
-		document.getElementById('one1').style.border = '2px dotted grey';
-		document.getElementById('two1').style.border = '2px dotted grey';
-		document.getElementById('three1').style.border = '2px dotted grey';
+		document.getElementById('one1').style.backgroundColor = 'white';
+		document.getElementById('two1').style.backgroundColor = 'white';
+		document.getElementById('three1').style.backgroundColor = 'white';
 	}
 
 	if (threeLine && isEq(2) && (showReel1[2].val === '🌟🌟' || showReel1[2].val === '🌟' || showReel1[2].val === '🍒🍒' || showReel1[2].val === '🍒')) {
-		document.getElementById('one2').style.border = '4px solid red';
-		document.getElementById('two2').style.border = '4px solid red';
-		document.getElementById('three2').style.border = '4px solid red';
+		document.getElementById('one2').style.backgroundColor = 'gold';
+		document.getElementById('two2').style.backgroundColor = 'gold';
+		document.getElementById('three2').style.backgroundColor = 'gold';
 	} else {
-		document.getElementById('one2').style.border = '2px dotted grey';
-		document.getElementById('two2').style.border = '2px dotted grey';
-		document.getElementById('three2').style.border = '2px dotted grey';
+		document.getElementById('one2').style.backgroundColor = 'white';
+		document.getElementById('two2').style.backgroundColor = 'white';
+		document.getElementById('three2').style.backgroundColor = 'white';
 	}
 }
 
